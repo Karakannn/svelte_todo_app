@@ -2,15 +2,53 @@
     export let id, text, completed;
 </script>
 
-<div class="item">
+<div class="item" class:completed>
     <input
         type="text"
         class="text-input"
         bind:value={text}
         readonly={completed}
     />
-    <input type="checkbox" name="list-checkbox" class="completed-checkbox" bind:checked="{completed}">
+    <input
+        type="checkbox"
+        name="list-checkbox"
+        class="completed-checkbox"
+        bind:checked={completed}
+    />
 </div>
 
 <style>
+    .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        background: #ffffff;
+    }
+
+    .item.completed {
+        background: #dddddd;
+    }
+
+    .item.completed.text-input {
+        background: #555555;
+        text-decoration: line-through;
+    }
+
+    .item:focus-within {
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    .text-input {
+        flex-grow: 1;
+        background: none;
+        border: none;
+        outline: none;
+        font-weight: 500;
+        font-size: 1em;
+    }
+
+    .completed-checkbox {
+        margin-left: 15px;
+    }
 </style>
