@@ -1,12 +1,30 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+
     export let id, text, completed;
+
+    const dispatch = createEventDispatcher();
+
+    function triggerUpdate() {
+        dispatch("update", { id, text, completed });
+    }
+
+    function handleDeleteItem() {
+        const yes = confirm("Are you sure you wish to delete this item?")
+
+        if(yes) {
+            dispatch("delete", id)
+        }
+    }
 </script>
 
-<div class="item" class:completed>
+<div class="item" class:completed on:dblclick={handleDeleteItem}>
     <input
         type="text"
         class="text-input"
         bind:value={text}
+        on:keyup={(key, target) => key === "Enter" && target.blur()}
+        on:blur={() => triggerUpdate()}
         readonly={completed}
     />
     <input
@@ -14,6 +32,7 @@
         name="list-checkbox"
         class="completed-checkbox"
         bind:checked={completed}
+        on:change={() => triggerUpdate()}
     />
 </div>
 
@@ -30,8 +49,8 @@
         background: #dddddd;
     }
 
-    .item.completed.text-input {
-        background: #555555;
+    .item.completed .text-input {
+        color: #555555;
         text-decoration: line-through;
     }
 
